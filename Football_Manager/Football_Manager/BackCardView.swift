@@ -9,7 +9,27 @@ import SwiftUI
 
 struct BackCardView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.white)
+                .frame(width: 350, height: 400)
+                .shadow(radius: 10)
+            HStack {
+                VStack {
+                    Text("Goals")
+                    // Text("\(player.goals)")
+                    Text("Presence")
+                }
+                Spacer().frame(width: 100)
+                VStack {
+                    Text("Assists")
+                    // Text("\(player.assists)")
+                    Text("Woodwork")
+                }
+            }
+            .font(.system(size: 18))
+            .bold()
+        }
     }
 }
 

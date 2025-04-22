@@ -21,10 +21,15 @@ class Player {
     var speed: String
     var strength: String
     var verticalJump: String
-    var role: String // 👈 Aggiunta del ruolo
+    var role: String
     var profileImage: Data?
+    
+    var assists: Int
+    var goals: Int
+    var woodworks: Int
+    var presence: Int
 
-    init(name: String, surname: String, weight: Double, height: Double, preferredFoot: String, agility: String, endurance: String, speed: String, strength: String, verticalJump: String, role: String, profileImage: Data? = nil) {
+    init(name: String, surname: String, weight: Double, height: Double, preferredFoot: String, agility: String, endurance: String, speed: String, strength: String, verticalJump: String, role: String, assists: Int = 0, goals: Int = 0, woodworks: Int = 0, presence: Int = 0, profileImage: Data? = nil) {
         self.id = UUID()
         self.name = name
         self.surname = surname
@@ -36,7 +41,11 @@ class Player {
         self.speed = speed
         self.strength = strength
         self.verticalJump = verticalJump
-        self.role = role // 👈
+        self.role = role
         self.profileImage = profileImage
+        self.assists = assists
+        self.goals = goals
+        self.woodworks = woodworks
+        self.presence = presence
     }
 }

@@ -13,95 +13,76 @@ struct ContentView: View {
     @Query var players: [Player]
     @State private var showAddPlayer = false
     @State private var selectedRole: String = "All" // Il ruolo selezionato, inizialmente "All"
-
+    
     let roles = ["All", "Goalkeeper", "Defender", "Midfielder", "Forward"]
-
+    
     var body: some View {
-        NavigationView {
-            VStack {
-                List {
-                    Section(header: Text("Players")) {
-                        ForEach(filteredPlayers) { player in
-                            HStack {
-                                if let imageData = player.profileImage,
-                                   let uiImage = UIImage(data: imageData) {
-                                    Image(uiImage: uiImage)
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 40, height: 40)
-                                        .clipShape(Circle())
-                                } else {
-                                    Image(systemName: "person.circle.fill")
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 40, height: 40)
-                                        .foregroundStyle(.gray)
+        TabView {
+            NavigationView {
+                PlayerListView(players: players, filteredPlayers: filteredPlayers, deletePlayers: deletePlayers)
+                    .navigationTitle("Players")
+                    .toolbar {
+                        // Filtro per ruolo tramite Menu nella toolbar
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Menu {
+                                Button("All") {
+                                    selectedRole = "All"
                                 }
-                                VStack(alignment: .leading) {
-                                    Text("\(player.name) \(player.surname)")
-                                        .font(.headline)
-                                    Text(player.role)
-                                        .font(.subheadline)
-                                        .foregroundColor(.secondary)
+                                Button("Goalkeeper") {
+                                    selectedRole = "Goalkeeper"
                                 }
+                                Button("Defender") {
+                                    selectedRole = "Defender"
+                                }
+                                Button("Midfielder") {
+                                    selectedRole = "Midfielder"
+                                }
+                                Button("Forward") {
+                                    selectedRole = "Forward"
+                                }
+                            } label: {
+                                Image(systemName: "line.3.horizontal.decrease.circle") // Icona filtro
                             }
                         }
-                        .onDelete(perform: deletePlayers)
+                        
+                        // Pulsante per aggiungere un nuovo giocatore
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button(action: {
+                                showAddPlayer.toggle()
+                            }) {
+                                Image(systemName: "plus")
+                            }
+                        }
+                        
+                        // Pulsante per abilitare la modalità di eliminazione
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            EditButton()
+                        }
                     }
-                }
+                    .sheet(isPresented: $showAddPlayer) {
+                        AddPlayerView()
+                    }
             }
-            .navigationTitle("Players")
-            .toolbar {
-                // Filtro per ruolo tramite Menu nella toolbar
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Menu {
-                        Button("All") {
-                            selectedRole = "All"
-                        }
-                        Button("Goalkeeper") {
-                            selectedRole = "Goalkeeper"
-                        }
-                        Button("Defender") {
-                            selectedRole = "Defender"
-                        }
-                        Button("Midfielder") {
-                            selectedRole = "Midfielder"
-                        }
-                        Button("Forward") {
-                            selectedRole = "Forward"
-                        }
-                    } label: {
-                        Image(systemName: "line.3.horizontal.decrease.circle") // Icona filtro
-                    }
-                }
-
-                // Pulsante per aggiungere un nuovo giocatore
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showAddPlayer.toggle()
-                    }) {
-                        Image(systemName: "plus")
-                    }
-                }
-
-                // Pulsante per abilitare la modalità di eliminazione
-                ToolbarItem(placement: .navigationBarLeading) {
-                    EditButton()
-                }
+            .tabItem {
+                Label("Players", systemImage: "list.dash")
             }
-            .sheet(isPresented: $showAddPlayer) {
-                AddPlayerView()
+            
+            NavigationView {
+                MatchManagementView()
+            }
+            .tabItem {
+                Label("Match", systemImage: "soccerball.inverse")
             }
         }
     }
-
+    
     private func deletePlayers(at offsets: IndexSet) {
         for index in offsets {
             let player = filteredPlayers[index]
             modelContext.delete(player)
         }
     }
-
+    
     // Computed property per filtrare i giocatori in base al ruolo selezionato
     var filteredPlayers: [Player] {
         if selectedRole == "All" {

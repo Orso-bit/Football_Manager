@@ -11,12 +11,12 @@ struct PlayerListView: View {
     var players: [Player]
     var filteredPlayers: [Player]
     var deletePlayers: (IndexSet) -> Void
-
+    
     var body: some View {
         List {
             Section(header: Text("Players")) {
                 ForEach(filteredPlayers) { player in
-                    NavigationLink(destination: PlayerCardView(player: player)) {
+                    NavigationLink(destination: FrontBackCardView(player: player)) {
                         HStack {
                             if let imageData = player.profileImage,
                                let uiImage = UIImage(data: imageData) {
@@ -45,5 +45,16 @@ struct PlayerListView: View {
                 .onDelete(perform: deletePlayers)
             }
         }
+        .background(
+            LinearGradient(
+                gradient: Gradient(colors: [
+                    Color(red: 144/255, green: 198/255, blue: 124/255), // RGB(144, 198, 124)
+                    Color(red: 225/255, green: 238/255, blue: 188/255)  // RGB(225, 238, 188)
+                ]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
+        .scrollContentBackground(.hidden)
     }
 }

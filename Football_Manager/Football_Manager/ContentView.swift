@@ -12,7 +12,7 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query var players: [Player]
     @State private var showAddPlayer = false
-    @State private var selectedRole: String = "All" // Il ruolo selezionato, inizialmente "All"
+    @State private var selectedRole: String = "All"
     
     let roles = ["All", "Goalkeeper", "Defender", "Midfielder", "Forward"]
     
@@ -22,30 +22,18 @@ struct ContentView: View {
                 PlayerListView(players: players, filteredPlayers: filteredPlayers, deletePlayers: deletePlayers)
                     .navigationTitle("Players")
                     .toolbar {
-                        // Filtro per ruolo tramite Menu nella toolbar
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Menu {
-                                Button("All") {
-                                    selectedRole = "All"
-                                }
-                                Button("Goalkeeper") {
-                                    selectedRole = "Goalkeeper"
-                                }
-                                Button("Defender") {
-                                    selectedRole = "Defender"
-                                }
-                                Button("Midfielder") {
-                                    selectedRole = "Midfielder"
-                                }
-                                Button("Forward") {
-                                    selectedRole = "Forward"
+                                ForEach(roles, id: \.self) { role in
+                                    Button(role) {
+                                        selectedRole = role
+                                    }
                                 }
                             } label: {
-                                Image(systemName: "line.3.horizontal.decrease.circle") // Icona filtro
+                                Image(systemName: "line.3.horizontal.decrease.circle")
                             }
                         }
                         
-                        // Pulsante per aggiungere un nuovo giocatore
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button(action: {
                                 showAddPlayer.toggle()
@@ -54,7 +42,6 @@ struct ContentView: View {
                             }
                         }
                         
-                        // Pulsante per abilitare la modalità di eliminazione
                         ToolbarItem(placement: .navigationBarLeading) {
                             EditButton()
                         }
@@ -67,7 +54,7 @@ struct ContentView: View {
                 Label("Players", systemImage: "list.dash")
             }
             
-            NavigationView {
+            NavigationStack {
                 MatchManagementView()
             }
             .tabItem {
@@ -83,7 +70,6 @@ struct ContentView: View {
         }
     }
     
-    // Computed property per filtrare i giocatori in base al ruolo selezionato
     var filteredPlayers: [Player] {
         if selectedRole == "All" {
             return players
@@ -95,4 +81,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .modelContainer(for: Player.self, inMemory: true)
 }

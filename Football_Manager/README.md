@@ -11,7 +11,7 @@ Football match manager
 ---
 
 - **Player Management**
-  Add players, save personal details, athletic stats, and upload profile pictures
+  Add players, save personal details, athletic stats.
 
 - **Custom Stats Tracking**  
   Record agility, endurance, speed, strength, and vertical jump for each player.
@@ -24,6 +24,12 @@ Football match manager
 
 - **Filter by Role**  
   Quickly view players by position to organize your team more efficiently. 
+  
+- **Filter by Number of Players for Match**
+  Select 5, 6, 8, or 11 players based on the type of match.
+  
+- **User Notification and Date Picker Support**
+  Pick a date and time for your match and receive a notification reminder.
 
 ## Requirements
 

@@ -83,7 +83,6 @@ struct TeamsContentView: View {
                         isShowingDatePicker = true
                     }) {
                         Image(systemName: "calendar.badge.clock")
-                            .imageScale(.large)
                     }
                     .sheet(isPresented: $isShowingDatePicker) {
                         VStack(spacing: 20) {

@@ -11,8 +11,9 @@ import SwiftData
 struct MatchManagementView: View {
     @State private var address = ""
     @State private var date = Date.now
-    @Environment(\.modelContext) private var modelContext
     @Query private var players: [Player]
+    @State private var searchText = ""
+    @State private var filteredPlayers: [Player] = []
     @State private var selectedPlayerIds1: [UUID?] = Array(repeating: nil, count: 5)
     @State private var selectedPlayerIds2: [UUID?] = Array(repeating: nil, count: 5)
     
@@ -27,53 +28,38 @@ struct MatchManagementView: View {
                 endPoint: .bottomTrailing
             )
             .ignoresSafeArea()
-            
-            List {
-                Section(header: Text("When")) {
-                    HStack {
-                        Image(systemName: "calendar")
-                            .font(.title2)
-                        DatePicker("Date", selection: $date, displayedComponents: .date)
+            VStack {
+                List {
+                    Section(header: Text("When")) {
+                        HStack {
+                            Image(systemName: "calendar")
+                                .font(.title2)
+                            DatePicker("Date", selection: $date, displayedComponents: .date)
+                                .font(.title2)
+                                .labelsHidden()
+                            DatePicker("Time", selection: $date, displayedComponents:
+                                    .hourAndMinute)
                             .font(.title2)
                             .labelsHidden()
-                        DatePicker("Time", selection: $date, displayedComponents:
-                                .hourAndMinute)
-                        .font(.title2)
-                        .labelsHidden()
+                        }
+                        .padding(.vertical, 3)
                     }
-                    .padding(.vertical, 3)
+                    .listRowBackground(Color.white.opacity(0.9))
+                    
+                    Section(header: Text("Where")) {
+                        HStack {
+                            Image(systemName: "map")
+                                .font(.title2)
+                            TextField("Address", text: $address)
+                        }
+                        .padding(.vertical, 8)
+                    }
+                    .listRowBackground(Color.white.opacity(0.9))
+                    Section (header: Text("Who")) {
+                        TeamsContentView()
+                    }
                 }
                 
-                Section(header: Text("Where")) {
-                    HStack {
-                        Image(systemName: "map")
-                            .font(.title2)
-                        TextField("Address", text: $address)
-                    }
-                    .padding(.vertical, 8)
-                }
-                Section(header: Text("Team 1")) {
-                    ForEach(0..<5, id: \.self) { index in
-                        Picker("Player \(index + 1)", selection: $selectedPlayerIds1[index]) {
-                            ForEach(players) { player in
-                                Text(player.name)
-                                    .tag(player.id)
-                            }
-                        }
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                }
-                Section(header: Text("Team 2")) {
-                    ForEach(0..<5, id: \.self) { index in
-                        Picker("Player \(index + 1)", selection: $selectedPlayerIds2[index]) {
-                            ForEach(players) { player in
-                                Text(player.name)
-                                    .tag(player.id)
-                            }
-                        }
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                }
             }
             .scrollContentBackground(.hidden)
             .navigationTitle("Match Day")

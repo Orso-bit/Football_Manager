@@ -55,7 +55,7 @@ struct ContentView: View {
             }
             
             NavigationStack {
-                MatchManagementView()
+                TeamsContentView()
             }
             .tabItem {
                 Label("Match", systemImage: "soccerball.inverse")

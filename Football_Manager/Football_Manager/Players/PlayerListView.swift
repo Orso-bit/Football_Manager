@@ -44,6 +44,7 @@ struct PlayerListView: View {
                 }
                 .onDelete(perform: deletePlayers)
             }
+            .listRowBackground(Color.white.opacity(0.9))
         }
         .background(
             LinearGradient(

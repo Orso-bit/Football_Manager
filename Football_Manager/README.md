@@ -10,7 +10,7 @@ Football match manager
 
 ---
 
-- **Player Management**
+- **Player Management 🏟️**
   Add players, save personal details, athletic stats.
 
 - **Custom Stats Tracking 📊**  

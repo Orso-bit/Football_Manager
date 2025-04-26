@@ -7,25 +7,25 @@ Football match manager
 ## 🌟 Key Features
 
 - **Player Management 🏟️**
-Add players, save personal details, athletic stats.
+  Add players, save personal details, athletic stats.
 
 - **Custom Stats Tracking 📊**  
-Record agility, endurance, speed, strength, and vertical jump for each player.
+  Record agility, endurance, speed, strength, and vertical jump for each player.
 
 - **Roles & Preferences ⚽**  
-Assign preferred positions (e.g., midfielder, defender) and dominant foot.
+  Assign preferred positions (e.g., midfielder, defender) and dominant foot.
 
 - **Profile Image Support 👤**  
-Add personal profile images using the system photo picker.
+  Add personal profile images using the system photo picker.
 
 - **Filter by Role 🔍**  
-Quickly view players by position to organize your team more efficiently. 
+  Quickly view players by position to organize your team more efficiently. 
   
 - **Filter by Number of Players for Match 1️⃣1️⃣**
-Select 5, 6, 8, or 11 players based on the type of match.
+  Select 5, 6, 8, or 11 players based on the type of match.
   
 - **User Notification and Date Picker Support 📅**
-Pick a date and time for your match and receive a notification reminder.
+  Pick a date and time for your match and receive a notification reminder.
 
 ## ⚙️ Requirements
 

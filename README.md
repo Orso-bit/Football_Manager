@@ -6,7 +6,7 @@ Football match manager
 
 ## 🌟 Key Features
 
-- **Player Management**
+- **Player Management 🏟️**
   Add players, save personal details, athletic stats.
 
 - **Custom Stats Tracking 📊**  

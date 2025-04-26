@@ -1,13 +1,17 @@
 # Football_Manager
 
+---
+
 Football match manager
 
 [App name] is an iOS app built with Xcode designed to help you to easily manage your football team. Track your players, store individual stats, and organize matches effortlessly—all in one place.
 
 ## Key Features
 
+---
+
 - **Player Management**
-  Add players, save personal details, athletic stats, and upload profile pictures
+  Add players, save personal details, athletic stats.
 
 - **Custom Stats Tracking**  
   Record agility, endurance, speed, strength, and vertical jump for each player.
@@ -20,8 +24,16 @@ Football match manager
 
 - **Filter by Role**  
   Quickly view players by position to organize your team more efficiently. 
+  
+- **Filter by Number of Players for Match**
+  Select 5, 6, 8, or 11 players based on the type of match.
+  
+- **User Notification and Date Picker Support**
+  Pick a date and time for your match and receive a notification reminder.
 
 ## Requirements
+
+---
 
 - **SwiftUI** – For an intuitive user interface
 - **SwiftData** – For data persistence
@@ -29,6 +41,8 @@ Football match manager
 - **Xcode 15+** – Developed using Apple’s native IDE
 
 ## Installation
+
+---
 
 1. Clone this repository: git clone <https://github.com/Orso-bit/Football_Manager.git>
 2. Open the project in Xcode

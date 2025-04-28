@@ -5,6 +5,7 @@
 //  Created by Giovanni Jr Di Fenza on 26/04/25.
 //
 
+import UserNotifications
 import SwiftData
 import SwiftUI
 
@@ -33,7 +34,11 @@ struct TeamsContentView: View {
                 .ignoresSafeArea()
                 
                 ScrollView {
-                    VStack(spacing: 20) {
+                    VStack(alignment: .leading, spacing: 20) {
+                        Text("Choose the date and time of the match")
+                            .font(.headline)
+                        
+                        
                         TeamSection(
                             title: "Team 1",
                             selectedPlayers: $selectedPlayersTeam1,
@@ -62,10 +67,11 @@ struct TeamsContentView: View {
                     }
                     .padding()
                 }
+                
             }
             
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     Menu {
                         ForEach(numberPlayers, id: \.self) { number in
                             Button("\(number)") {
@@ -89,7 +95,7 @@ struct TeamsContentView: View {
                             Text("Select Date and Time")
                                 .font(.headline)
                                 .padding(.top)
-
+                            
                             DatePicker(
                                 "",
                                 selection: $selectedDate,
@@ -97,17 +103,71 @@ struct TeamsContentView: View {
                             )
                             .datePickerStyle(.wheel)
                             .labelsHidden()
-
+                            
                             Button("Done") {
                                 isShowingDatePicker = false
+                                
+                                // Chiedi permesso notifiche
+                                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+                                    if success {
+                                        print("Autorizzazione concessa")
+                                        
+                                        // Calcola un giorno prima della data selezionata
+                                        let calendar = Calendar.current
+                                        if let oneDayBefore = calendar.date(byAdding: .day, value: -1, to: selectedDate) {
+                                            
+                                            // ✅ Prima di tutto, creo il contenuto della nuova notifica
+                                            let content = UNMutableNotificationContent()
+                                            content.title = "Promemoria Evento"
+                                            content.body = "Manca un giorno al tuo evento!"
+                                            content.sound = .default
+                                            
+                                            // ✅ Rimuovo tutte le notifiche già programmate
+                                            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+                                            
+                                            if oneDayBefore > Date() {
+                                                // Caso normale: il giorno prima è nel futuro
+                                                let dateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: oneDayBefore)
+                                                let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+                                                
+                                                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                                                
+                                                UNUserNotificationCenter.current().add(request) { error in
+                                                    if let error = error {
+                                                        print("Errore nell'aggiungere la notifica: \(error.localizedDescription)")
+                                                    } else {
+                                                        print("Notifica programmata per \(oneDayBefore)")
+                                                    }
+                                                }
+                                            } else {
+                                                // Caso speciale: il giorno prima è già passato, invio la notifica subito
+                                                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false) // dopo 5 secondi
+                                                
+                                                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                                                
+                                                UNUserNotificationCenter.current().add(request) { error in
+                                                    if let error = error {
+                                                        print("Errore nell'aggiungere la notifica immediata: \(error.localizedDescription)")
+                                                    } else {
+                                                        print("Giorno prima già passato: notifica inviata subito")
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        
+                                    } else if let error = error {
+                                        print("Errore richiesta autorizzazione: \(error.localizedDescription)")
+                                    }
+                                }
                             }
                             .padding()
                         }
                         .padding()
-                        .presentationDetents([.fraction(0.5), .medium]) // 👈 Qui controlli l'altezza!
+                        .presentationDetents([.fraction(0.5), .medium])
                     }
                 }
             }
+            .navigationTitle("Select the Players")
         }
     }
 }

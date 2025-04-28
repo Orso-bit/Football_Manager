@@ -8,6 +8,7 @@ Football match manager
 
 ## 🌟 Key Features
 
+<<<<<<< HEAD
 ---
 
 <<<<<<< HEAD
@@ -15,6 +16,9 @@ Football match manager
 =======
 - **Player Management**
 >>>>>>> main
+=======
+- **Player Management**
+>>>>>>> 6e9c953b4d951774096317d2d57c370be15791c2
   Add players, save personal details, athletic stats.
 
 - **Custom Stats Tracking 📊**  
@@ -28,8 +32,12 @@ Football match manager
 
 - **Filter by Role 🔍**  
   Quickly view players by position to organize your team more efficiently. 
+<<<<<<< HEAD
   
 <<<<<<< HEAD
+=======
+
+>>>>>>> 6e9c953b4d951774096317d2d57c370be15791c2
 - **Filter by Number of Players for Match 1️⃣1️⃣**
   Select 5, 6, 8, or 11 players based on the type of match.
   

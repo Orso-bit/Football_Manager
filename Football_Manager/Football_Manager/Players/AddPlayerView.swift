@@ -26,6 +26,8 @@ struct AddPlayerView: View {
     @State private var strength = ""
     @State private var verticalJump = ""
     @State private var role = ""
+    
+    @State private var showAlert = false
 
     // Opzioni per i picker
     let foot = ["Left", "Right", "Both"]
@@ -112,7 +114,10 @@ struct AddPlayerView: View {
                         // Bottone "Save" a destra
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button("Save") {
-                                if let finalImage = viewModel.uiImage {
+                                if name.isEmpty || surname.isEmpty || weight.isEmpty || height.isEmpty || role.isEmpty || preferredFoot.isEmpty || agility.isEmpty || endurance.isEmpty || speed.isEmpty || strength.isEmpty || verticalJump.isEmpty {
+                                    showAlert = true
+                                    print("Please fill in all mandatory fields.")
+                                } else if let finalImage = viewModel.uiImage {
                                     let newPlayer = Player(
                                         name: name,
                                         surname: surname,
@@ -130,6 +135,8 @@ struct AddPlayerView: View {
                                     modelContext.insert(newPlayer)   // Salva nuovo giocatore
                                     dismiss()   // Chiude la view
                                 }
+                            }.alert("Please fill in all mandatory fields.", isPresented: $showAlert) {
+                                Button("OK", role: .cancel) { }
                             }
                         }
                     }

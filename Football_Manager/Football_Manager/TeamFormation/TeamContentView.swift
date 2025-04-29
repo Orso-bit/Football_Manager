@@ -17,6 +17,8 @@ struct TeamsContentView: View {
     @State private var selectedPlayersTeam1: [Player?] = Array(repeating: nil, count: 5)
     @State private var selectedPlayersTeam2: [Player?] = Array(repeating: nil, count: 5)
     
+    @State private var isShowingAlert: Bool = false
+    
     @State private var selectedNumber = 5
     var numberPlayers = [5, 6, 8, 11]
     
@@ -58,10 +60,13 @@ struct TeamsContentView: View {
                         Button("Submit") {
                             if selectedPlayersTeam1.contains(where: { $0 == nil }) || selectedPlayersTeam2.contains(where: { $0 == nil }) {
                                 print("Please select all players for both teams.")
+                                isShowingAlert = true
                             } else {
                                 print("Team 1: \(selectedPlayersTeam1.compactMap { $0?.name }.joined(separator: ", "))")
                                 print("Team 2: \(selectedPlayersTeam2.compactMap { $0?.name }.joined(separator: ", "))")
                             }
+                        }.alert(isPresented: $isShowingAlert) {
+                            Alert(title: Text("Please complete all required fields."), message: Text("Remeber to select the Date"), dismissButton: .default(Text("OK")))
                         }
                         .padding()
                     }
@@ -112,17 +117,17 @@ struct TeamsContentView: View {
                                     if success {
                                         print("Autorizzazione concessa")
                                         
-                                        // Calcola un giorno prima della data selezionata
+                                        // one day before calculation
                                         let calendar = Calendar.current
                                         if let oneDayBefore = calendar.date(byAdding: .day, value: -1, to: selectedDate) {
                                             
-                                            // ✅ Prima di tutto, creo il contenuto della nuova notifica
+                                            // notification content
                                             let content = UNMutableNotificationContent()
                                             content.title = "Promemoria Evento"
                                             content.body = "Manca un giorno al tuo evento!"
                                             content.sound = .default
                                             
-                                            // ✅ Rimuovo tutte le notifiche già programmate
+                                            // removing previous notification
                                             UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
                                             
                                             if oneDayBefore > Date() {

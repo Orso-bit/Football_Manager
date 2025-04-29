@@ -116,7 +116,7 @@ struct AddPlayerView: View {
                             Button("Save") {
                                 if name.isEmpty || surname.isEmpty || weight.isEmpty || height.isEmpty || role.isEmpty || preferredFoot.isEmpty || agility.isEmpty || endurance.isEmpty || speed.isEmpty || strength.isEmpty || verticalJump.isEmpty {
                                     showAlert = true
-                                    print("Please fill in all mandatory fields.")
+                                    print("Please complete all required fields.")
                                 } else if let finalImage = viewModel.uiImage {
                                     let newPlayer = Player(
                                         name: name,

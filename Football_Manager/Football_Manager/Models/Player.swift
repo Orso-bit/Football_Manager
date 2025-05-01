@@ -28,7 +28,7 @@ class Player {
     var goals: Int
     var woodworks: Int
     var presence: Int
-
+    
     init(name: String, surname: String, weight: Double, height: Double, preferredFoot: String, agility: String, endurance: String, speed: String, strength: String, verticalJump: String, role: String, assists: Int = 0, goals: Int = 0, woodworks: Int = 0, presence: Int = 0, profileImage: Data? = nil) {
         self.id = UUID()
         self.name = name
@@ -47,5 +47,11 @@ class Player {
         self.goals = goals
         self.woodworks = woodworks
         self.presence = presence
+    }
+}
+
+extension Player {
+    var totalScore: Int {
+        return assists + goals + woodworks + presence
     }
 }

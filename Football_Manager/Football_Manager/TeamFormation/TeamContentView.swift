@@ -56,122 +56,44 @@ struct TeamsContentView: View {
                             selectedNumber: $selectedNumber,
                             allPlayers: players
                         )
-                        
+                    }
+                    .padding()
                         Button("Submit") {
                             if selectedPlayersTeam1.contains(where: { $0 == nil }) || selectedPlayersTeam2.contains(where: { $0 == nil }) {
                                 print("Please select all players for both teams.")
                                 isShowingAlert = true
                             } else {
-                                print("Team 1: \(selectedPlayersTeam1.compactMap { $0?.name }.joined(separator: ", "))")
-                                print("Team 2: \(selectedPlayersTeam2.compactMap { $0?.name }.joined(separator: ", "))")
+                                let team1TotalScore: Int = selectedPlayersTeam1.compactMap(\.?.totalScore).reduce(0, +)
+                                let team2TotalScore: Int = selectedPlayersTeam2.compactMap(\.?.totalScore).reduce(0, +)
+                                
+                                let difference = abs(team1TotalScore - team2TotalScore)
+                                
+                                print("Team 1 Total Score: \(team1TotalScore)")
+                                print("Team 2 Total Score: \(team2TotalScore)")
+                                print("Score Difference: \(difference)")
+                                
+                                if difference <= 5 {
+                                    print("Teams are balanced")
+                                } else {
+                                    print("Team are not balanced")
+                                }
                             }
                         }.alert(isPresented: $isShowingAlert) {
                             Alert(title: Text("Please complete all required fields."), message: Text("Remeber to select the Date"), dismissButton: .default(Text("OK")))
                         }
                         .padding()
-                    }
-                    .padding()
                 }
                 
             }
+            TimeNotification(
+                isShowingDatePicker: $isShowingDatePicker,
+                selectedDate: $selectedDate,
+                selectedNumber: $selectedNumber,
+                selectedPlayersTeam1: $selectedPlayersTeam1,
+                selectedPlayersTeam2: $selectedPlayersTeam2,
+                numberPlayers: numberPlayers
+            )
             
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Menu {
-                        ForEach(numberPlayers, id: \.self) { number in
-                            Button("\(number)") {
-                                selectedNumber = number
-                                selectedPlayersTeam1 = Array(repeating: nil, count: number)
-                                selectedPlayersTeam2 = Array(repeating: nil, count: number)
-                            }
-                        }
-                    } label: {
-                        Image(systemName: "line.3.horizontal.decrease.circle")
-                    }
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        isShowingDatePicker = true
-                    }) {
-                        Image(systemName: "calendar.badge.clock")
-                    }
-                    .sheet(isPresented: $isShowingDatePicker) {
-                        VStack(spacing: 20) {
-                            Text("Select Date and Time")
-                                .font(.headline)
-                                .padding(.top)
-                            
-                            DatePicker(
-                                "",
-                                selection: $selectedDate,
-                                displayedComponents: [.date, .hourAndMinute]
-                            )
-                            .datePickerStyle(.wheel)
-                            .labelsHidden()
-                            
-                            Button("Done") {
-                                isShowingDatePicker = false
-                                
-                                // Chiedi permesso notifiche
-                                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-                                    if success {
-                                        print("Autorizzazione concessa")
-                                        
-                                        // one day before calculation
-                                        let calendar = Calendar.current
-                                        if let oneDayBefore = calendar.date(byAdding: .day, value: -1, to: selectedDate) {
-                                            
-                                            // notification content
-                                            let content = UNMutableNotificationContent()
-                                            content.title = "Promemoria Evento"
-                                            content.body = "Manca un giorno al tuo evento!"
-                                            content.sound = .default
-                                            
-                                            // removing previous notification
-                                            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-                                            
-                                            if oneDayBefore > Date() {
-                                                // Caso normale: il giorno prima è nel futuro
-                                                let dateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: oneDayBefore)
-                                                let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
-                                                
-                                                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-                                                
-                                                UNUserNotificationCenter.current().add(request) { error in
-                                                    if let error = error {
-                                                        print("Errore nell'aggiungere la notifica: \(error.localizedDescription)")
-                                                    } else {
-                                                        print("Notifica programmata per \(oneDayBefore)")
-                                                    }
-                                                }
-                                            } else {
-                                                // Caso speciale: il giorno prima è già passato, invio la notifica subito
-                                                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false) // dopo 5 secondi
-                                                
-                                                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-                                                
-                                                UNUserNotificationCenter.current().add(request) { error in
-                                                    if let error = error {
-                                                        print("Errore nell'aggiungere la notifica immediata: \(error.localizedDescription)")
-                                                    } else {
-                                                        print("Giorno prima già passato: notifica inviata subito")
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        
-                                    } else if let error = error {
-                                        print("Errore richiesta autorizzazione: \(error.localizedDescription)")
-                                    }
-                                }
-                            }
-                            .padding()
-                        }
-                        .padding()
-                        .presentationDetents([.fraction(0.5), .medium])
-                    }
-                }
-            }
             .navigationTitle("Select the Players")
         }
     }

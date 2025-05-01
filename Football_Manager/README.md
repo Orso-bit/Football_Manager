@@ -6,7 +6,7 @@ Football match manager
 
 ## 🌟 Key Features
 
-- **Player Management**
+- **Player Management 🏟️**
   Add players, save personal details, athletic stats.
 
 - **Custom Stats Tracking 📊**  
@@ -26,6 +26,9 @@ Football match manager
   
 - **User Notification and Date Picker Support 📅**
   Pick a date and time for your match and receive a notification reminder.
+
+- **Teams Balance ⚖️**
+  Checks if the two teams are matched based on players’ performance stats
 
 ## ⚙️ Requirements
 

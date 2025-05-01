@@ -28,7 +28,6 @@ Football match manager
   Pick a date and time for your match and receive a notification reminder.
 
 - **Teams Balance ⚖️**
-
   Checks if the two teams are matched based on players’ performance stats
 
 ## ⚙️ Requirements

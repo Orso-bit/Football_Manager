@@ -1,8 +1,8 @@
-# Football_Manager
+# Quinto
 
 Football match manager
 
-[App name] is an iOS app built with Xcode designed to help you to easily manage your football team. Track your players, store individual stats, and organize matches effortlessly—all in one place.
+Quinto is an iOS app built with Xcode designed to help you to easily manage your football team. Track your players, store individual stats, and organize matches effortlessly—all in one place.
 
 ## 🌟 Key Features
 

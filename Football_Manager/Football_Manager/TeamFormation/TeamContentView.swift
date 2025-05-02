@@ -17,7 +17,7 @@ struct TeamsContentView: View {
     @State private var selectedPlayersTeam1: [Player?] = Array(repeating: nil, count: 5)
     @State private var selectedPlayersTeam2: [Player?] = Array(repeating: nil, count: 5)
     
-    @State private var isShowingAlert: Bool = false
+    @State private var activeAlert: alertType?
     
     @State private var selectedNumber = 5
     var numberPlayers = [5, 6, 8, 11]
@@ -58,43 +58,74 @@ struct TeamsContentView: View {
                         )
                     }
                     .padding()
-                        Button("Submit") {
-                            if selectedPlayersTeam1.contains(where: { $0 == nil }) || selectedPlayersTeam2.contains(where: { $0 == nil }) {
-                                print("Please select all players for both teams.")
-                                isShowingAlert = true
+                    Button("Submit") {
+                        if selectedPlayersTeam1.contains(where: { $0 == nil }) || selectedPlayersTeam2.contains(where: { $0 == nil }) {
+                            activeAlert = .missingPlayers
+                        } else {
+                            let team1TotalScore: Int = selectedPlayersTeam1.compactMap(\.?.totalScore).reduce(0, +)
+                            let team2TotalScore: Int = selectedPlayersTeam2.compactMap(\.?.totalScore).reduce(0, +)
+                            
+                            let difference = abs(team1TotalScore - team2TotalScore)
+                            
+                            if difference <= 5 {
+                                activeAlert = .balanced
                             } else {
-                                let team1TotalScore: Int = selectedPlayersTeam1.compactMap(\.?.totalScore).reduce(0, +)
-                                let team2TotalScore: Int = selectedPlayersTeam2.compactMap(\.?.totalScore).reduce(0, +)
-                                
-                                let difference = abs(team1TotalScore - team2TotalScore)
-                                
-                                print("Team 1 Total Score: \(team1TotalScore)")
-                                print("Team 2 Total Score: \(team2TotalScore)")
-                                print("Score Difference: \(difference)")
-                                
-                                if difference <= 5 {
-                                    print("Teams are balanced")
-                                } else {
-                                    print("Team are not balanced")
-                                }
+                                activeAlert = .unbalanced
                             }
-                        }.alert(isPresented: $isShowingAlert) {
-                            Alert(title: Text("Please complete all required fields."), message: Text("Remeber to select the Date"), dismissButton: .default(Text("OK")))
                         }
-                        .padding()
+                    }.alert(item: $activeAlert) { alertType in
+                        Alert(
+                            title: Text("\(alertType.title)"),
+                            message: Text("\(alertType.message)"),
+                            dismissButton: .default(Text("OK"))
+                        )
+                    }
                 }
-                
+                .padding()
             }
-            TimeNotification(
-                isShowingDatePicker: $isShowingDatePicker,
-                selectedDate: $selectedDate,
-                selectedNumber: $selectedNumber,
-                selectedPlayersTeam1: $selectedPlayersTeam1,
-                selectedPlayersTeam2: $selectedPlayersTeam2,
-                numberPlayers: numberPlayers
-            )
             
-            .navigationTitle("Select the Players")
+        }
+        TimeNotification(
+            isShowingDatePicker: $isShowingDatePicker,
+            selectedDate: $selectedDate,
+            selectedNumber: $selectedNumber,
+            selectedPlayersTeam1: $selectedPlayersTeam1,
+            selectedPlayersTeam2: $selectedPlayersTeam2,
+            numberPlayers: numberPlayers
+        )
+        
+        .navigationTitle("Select the Players")
+    }
+    
+    enum alertType: Identifiable {
+        case missingPlayers
+        case balanced
+        case unbalanced
+        
+        var id: Int {
+            hashValue
+        }
+        
+        var title: String {
+            switch self {
+            case .missingPlayers:
+                return "Please complete all required fields."
+            case .balanced:
+                return "Teams are balanced"
+            case .unbalanced:
+                return "Teams are not balanced"
+            }
+        }
+        
+        var message: String {
+            switch self {
+            case .missingPlayers:
+                return "Select all players for both teams and set the date."
+            case .balanced:
+                return "Ready to play!"
+            case .unbalanced:
+                return "Try changing some players."
+            }
         }
     }
 }

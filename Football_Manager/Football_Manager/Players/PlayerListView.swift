@@ -43,14 +43,16 @@ struct PlayerListView: View {
                     }
                 }
                 .onDelete(perform: deletePlayers)
+                .listRowBackground(Color(red: 225/255, green: 238/255, blue: 188/255))
             }
             .listRowBackground(Color.white.opacity(0.9))
         }
+        .listRowSpacing(8.0)
         .background(
             LinearGradient(
                 gradient: Gradient(colors: [
                     Color(red: 144/255, green: 198/255, blue: 124/255), // RGB(144, 198, 124)
-                    Color(red: 225/255, green: 238/255, blue: 188/255)  // RGB(225, 238, 188)
+                    Color(red: 103/255, green: 174/255, blue: 110/255)  // RGB(225, 238, 188)
                 ]),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing

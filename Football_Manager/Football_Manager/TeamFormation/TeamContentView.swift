@@ -28,7 +28,7 @@ struct TeamsContentView: View {
                 LinearGradient(
                     gradient: Gradient(colors: [
                         Color(red: 144/255, green: 198/255, blue: 124/255),
-                        Color(red: 225/255, green: 238/255, blue: 188/255)
+                        Color(red: 103/255, green: 174/255, blue: 110/255)
                     ]),
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
@@ -56,7 +56,7 @@ struct TeamsContentView: View {
                             allPlayers: players
                         )
                         
-                        Button("Submit") {
+                        Button {
                             if selectedPlayersTeam1.contains(where: { $0 == nil }) || selectedPlayersTeam2.contains(where: { $0 == nil }) {
                                 activeAlert = .missingPlayers
                             } else {
@@ -71,7 +71,13 @@ struct TeamsContentView: View {
                                     activeAlert = .unbalanced
                                 }
                             }
+                        } label: {
+                            Text("Submit")
+                                .frame(maxWidth: .infinity)
                         }
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+                        .buttonBorderShape(.automatic)
                         .alert(item: $activeAlert) { alertType in
                             Alert(
                                 title: Text("\(alertType.title)"),

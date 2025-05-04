@@ -16,8 +16,8 @@ struct FrontBackCardView: View {
         ZStack {
             LinearGradient(
                 gradient: Gradient(colors: [
-                    Color(red: 144/255, green: 198/255, blue: 124/255), 
-                    Color(red: 225/255, green: 238/255, blue: 188/255)
+                    Color(red: 144/255, green: 198/255, blue: 124/255),
+                    Color(red: 103/255, green: 174/255, blue: 110/255)
                 ]),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing

@@ -81,7 +81,9 @@ struct AddPlayerView: View {
                             CustomTextField(placeholder: "Name", text: $name)
                             CustomTextField(placeholder: "Surname", text: $surname)
                             CustomTextField(placeholder: "Weight (kg)", text: $weight)
+                                .keyboardType(.numberPad)
                             CustomTextField(placeholder: "Height (cm)", text: $height)
+                                .keyboardType(.numberPad)
                         }
                         .listRowBackground(Color(red: 225/255, green: 238/255, blue: 188/255))
                         

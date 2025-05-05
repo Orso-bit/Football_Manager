@@ -85,6 +85,24 @@ struct TeamsContentView: View {
                                 dismissButton: .default(Text("OK"))
                             )
                         }
+                        Button {
+                            let (balancedTeam1, balancedTeam2) = createRandomBalancedTeams(from: players, teamSize: selectedNumber)
+
+                            selectedPlayersTeam1 = balancedTeam1.map { Optional($0) }
+                            selectedPlayersTeam2 = balancedTeam2.map { Optional($0) }
+
+                        } label: {
+                            ZStack {
+                                
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color.white.opacity(0.7))
+                                
+                                Text("Team Balance")
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .foregroundColor(.blue)
+                            }
+                        }
                     }
                     .padding()
                 }
@@ -122,6 +140,49 @@ struct TeamsContentView: View {
         }
     }
     
+    func createRandomBalancedTeams(from players: [Player], teamSize: Int) -> ([Player], [Player]) {
+        guard players.count >= teamSize * 2 else {
+            fatalError("Not enough players to form balanced teams.")
+        }
+
+        // Shuffle players first to introduce randomness
+        let shuffledPlayers = players.shuffled()
+        
+        var bestTeam1: [Player] = []
+        var bestTeam2: [Player] = []
+        var minDifference = Int.max
+
+        func backtrack(index: Int, team1: [Player], team2: [Player], score1: Int, score2: Int) {
+            if team1.count == teamSize, team2.count == teamSize {
+                let difference = abs(score1 - score2)
+                if difference < minDifference {
+                    minDifference = difference
+                    bestTeam1 = team1
+                    bestTeam2 = team2
+                }
+                return
+            }
+
+            if index >= shuffledPlayers.count { return }
+
+            let player = shuffledPlayers[index]
+
+            if team1.count < teamSize {
+                backtrack(index: index + 1, team1: team1 + [player], team2: team2, score1: score1 + player.totalScore, score2: score2)
+            }
+
+            if team2.count < teamSize {
+                backtrack(index: index + 1, team1: team1, team2: team2 + [player], score1: score1, score2: score2 + player.totalScore)
+            }
+        }
+
+        backtrack(index: 0, team1: [], team2: [], score1: 0, score2: 0)
+
+        print("Final Team Scores -> Team 1: \(bestTeam1.map(\.totalScore).reduce(0, +)), Team 2: \(bestTeam2.map(\.totalScore).reduce(0, +))")
+
+        return (bestTeam1, bestTeam2)
+    }
+    
     enum alertType: Identifiable {
         case missingPlayers, balanced, unbalanced
         
@@ -144,4 +205,3 @@ struct TeamsContentView: View {
         }
     }
 }
-

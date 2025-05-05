@@ -40,7 +40,7 @@ struct AddPlayerView: View {
                 LinearGradient(
                     gradient: Gradient(colors: [
                         Color(red: 144/255, green: 198/255, blue: 124/255),
-                        Color(red: 225/255, green: 238/255, blue: 188/255)
+                        Color(red: 103/255, green: 174/255, blue: 110/255)
                     ]),
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
@@ -61,7 +61,7 @@ struct AddPlayerView: View {
                                 Image(systemName: "person.circle.fill")
                                     .resizable()
                                     .frame(width: 80, height: 80)
-                                    .foregroundStyle(Color.white.opacity(0.9))
+                                    .foregroundStyle(Color(red: 225/255, green: 238/255, blue: 188/255))
                             }
                         }
                         
@@ -83,7 +83,7 @@ struct AddPlayerView: View {
                             CustomTextField(placeholder: "Weight (kg)", text: $weight)
                             CustomTextField(placeholder: "Height (cm)", text: $height)
                         }
-                        .listRowBackground(Color.white.opacity(0.9))
+                        .listRowBackground(Color(red: 225/255, green: 238/255, blue: 188/255))
                         
                         // Sezione attributi
                         Section(header: Text("Attributes")) {
@@ -94,13 +94,13 @@ struct AddPlayerView: View {
                             AttributeMenu(title: "Strength", selection: $strength, options: pickerOptions, systemImage: "dumbbell")
                             AttributeMenu(title: "Vertical Jump", selection: $verticalJump, options: pickerOptions, systemImage: "arrow.up")
                         }
-                        .listRowBackground(Color.white.opacity(0.9))
+                        .listRowBackground(Color(red: 225/255, green: 238/255, blue: 188/255))
                         
                         // Sezione ruolo
                         Section(header: Text("Role")) {
                             AttributeMenu(title: "Role", selection: $role, options: roles, systemImage: "person.3")
                         }
-                        .listRowBackground(Color.white.opacity(0.9))
+                        .listRowBackground(Color(red: 225/255, green: 238/255, blue: 188/255))
                     }
                     .scrollContentBackground(.hidden)
                     .navigationTitle("Add New Player")

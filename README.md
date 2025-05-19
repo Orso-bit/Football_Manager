@@ -38,6 +38,8 @@ Quinto is an iOS app built with Xcode designed to help you to easily manage your
 
 ## 🔧 Installation
 
-1. Clone this repository: git clone <https://github.com/Orso-bit/Football_Manager.git>
-2. Open the project in Xcode
-3. Run the app on a simulator or connected device
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/Orso-bit/Football_Manager.git
+3. Open the project in Xcode
+4. Run the app on a simulator or connected device
